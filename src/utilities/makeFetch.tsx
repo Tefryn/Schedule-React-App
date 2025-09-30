@@ -35,7 +35,7 @@ export function useJsonQuery(url: string): JsonQueryResult {
         };
 
         fetchData();
-
+        
         return () => {
             isMounted = false;
         };

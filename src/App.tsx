@@ -1,9 +1,10 @@
 import Banner from './components/Banner';
-import CourseList from './components/CourseList';
 import { useState } from 'react';
 import { useJsonQuery } from './utilities/makeFetch';
-import type Course from './types/Course.tsx';
+import { type Course } from './types/Course.tsx';
 import TermSelector from './components/TermSelector.tsx';
+import CourseSelector from './components/CourseSelector.tsx';
+import {ScheduleContextProvider} from './state/ScheduleContextProvider.tsx';
 
 interface Schedule {
   title: string;
@@ -22,14 +23,15 @@ const App = () => {
   const schedule = json as Schedule;
   const courses = Object.values(schedule.courses);
   const terms = [...new Set(courses.flatMap(course => course.term ?? []))].sort();
-  const selectedCourses = courses.filter(course => course.term && course.term === selected);
-
+  console.log(json);
   return (
     <>
       <Banner title = {schedule.title} />
       <div>
-        <TermSelector name = "term-selector" options = {terms} selected = {selected} setSelected = {setSelected}/>
-        <CourseList courses = {selectedCourses} />
+        <ScheduleContextProvider json={json}>
+          <TermSelector name = "term-selector" options = {terms} selected = {selected} setSelected = {setSelected}/>
+          <CourseSelector term = {selected} />
+        </ScheduleContextProvider>
       </div>
     </>
   );
