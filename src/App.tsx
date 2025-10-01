@@ -23,7 +23,7 @@ const App = () => {
   const schedule = json as Schedule;
   const courses = Object.values(schedule.courses);
   const terms = [...new Set(courses.flatMap(course => course.term ?? []))].sort();
-  console.log(json);
+
   return (
     <>
       <Banner title = {schedule.title} />
