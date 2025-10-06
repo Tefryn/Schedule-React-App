@@ -3,11 +3,12 @@ import { type Course } from '../types/Course.tsx';
 interface CourseProps {
   course: Course;
   selected: boolean;
+  conflicted: boolean;
   select: (course: Course) => void;
 }
 
-const CourseCard = ({course, selected, select}: CourseProps) => (
-    <div className={`flex flex-col p-2 rounded border ${selected ? 'border-blue-500 bg-blue-100' : 'border-gray-500'}`} onClick={() => select(course)}>
+const CourseCard = ({course, selected, conflicted, select}: CourseProps) => (
+    <div className={`flex flex-col p-2 rounded border ${getBorder(selected, conflicted)}`} onClick={() => select(course)}>
         <h3 className="m-0 px-3 text-lg">{course.term} CS {course.number}</h3>
         <p className="m-0 px-3">{course.title}</p>
         <div className="w-full mt-auto">
@@ -15,6 +16,10 @@ const CourseCard = ({course, selected, select}: CourseProps) => (
             <p className="px-3">{course.meets}</p>
         </div>
     </div>
+);
+
+const getBorder = (selected: boolean, conflicted: boolean) => (
+    selected ? 'border-blue-500 bg-blue-100' : conflicted ? 'border-red-500 bg-red-100': 'border-gray-500'
 );
 
 export default CourseCard

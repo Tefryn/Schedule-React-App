@@ -4,6 +4,7 @@ import { type Course } from '../types/Course';
 interface SelectedCoursesContextType {
   courses: Course[];
   selectedCourses: Course[];
+  conflictedCourses: Course[];
   toggleSelectedCourses: (course: Course) => void
 }
 
