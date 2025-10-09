@@ -10,8 +10,16 @@ export interface Course {
 }
 
 export const validateCourses = (json: unknown): ValidationResult<{courses:Course[]}> => {
-    if (json && (json as Schedule).courses) {
-        return { success: true, data: { courses: (json as Schedule).courses } }
+    const schedule = json as Schedule
+    if (json && schedule) {
+        const courses: Course[] = Object.entries(schedule.courses).map(([code, courseData]) => ({
+            code,
+            term: courseData.term,
+            number: courseData.number,
+            meets: courseData.meets,
+            title: courseData.title,
+        }));
+        return { success: true, data: { courses: courses } }
     }
     return { success: false, error: "Unable to parse data" }
 }

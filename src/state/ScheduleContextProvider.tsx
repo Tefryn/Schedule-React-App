@@ -14,8 +14,6 @@ const toggleList = <T,>(x: T, lst: T[]): T[] => (
   lst.includes(x) ? lst.filter(y => y !== x) : [...lst, x]
 );
 
-
-
 const getCourses = (json: unknown) => {
   const validation = validateCourses(json);
   if (!validation.success) {
