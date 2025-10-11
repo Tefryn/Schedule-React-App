@@ -1,5 +1,5 @@
 import { type Course } from '../types/Course.tsx';
-import { CourseFormButton } from './CourseForm.tsx';
+import { CourseFormButton } from './CourseEditor.tsx';
 
 interface CourseProps {
   course: Course;

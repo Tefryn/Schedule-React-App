@@ -31,3 +31,4 @@ const timeOverlap = (time1: number[], time2: number[]) => (
 );
 
 export default catchConflicts;
+export {getDays, getTimes};

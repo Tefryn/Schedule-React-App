@@ -16,11 +16,12 @@ const toggleList = <T,>(x: T, lst: T[]): T[] => (
 
 const getCourses = (json: unknown) => {
   const validation = validateCourses(json);
+
   if (!validation.success) {
     console.log(validation.error)
   };
-
-  return (!validation.data?.courses) ? [] : Object.values(validation.data.courses);
+  const courses = validation.data?.courses || []
+  return Object.entries(courses).map(([code, course]) => ({ code, ...course }));
 };
 
 const getTitle = (json: unknown) => {

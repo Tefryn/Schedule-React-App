@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useParams } from '@tanstack/react-router';
-import { CourseForm } from '../components/CourseForm.tsx'
+import { CourseEditor } from '../components/CourseEditor.tsx'
 
 const CourseFormPage = () => {
   const { code, term, number, title, meets} = useParams({ from: '/form/$code/$term/$number/$title/$meets' })
@@ -9,7 +9,7 @@ const CourseFormPage = () => {
     return <></>
   }
   return (
-    <CourseForm code={code} term={term} number={number} title={title} meets={meets}/>
+    <CourseEditor code={code} term={term} number={number} title={title} meets={meets}/>
   )
 };
 
