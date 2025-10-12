@@ -1,15 +1,15 @@
 import Banner from './components/Banner';
 import { useState } from 'react';
-import { useJsonQuery } from './utilities/makeFetch';
+import { useDataQuery } from './utilities/firebase.tsx';
 import TermSelector from './components/TermSelector.tsx';
 import CourseSelector from './components/CourseSelector.tsx';
 import {ScheduleContextProvider} from './state/ScheduleContextProvider.tsx';
 import CoursePlanCard from './components/ScheduleCard.tsx';
 
+
 const App = () => {
   const [selected, setSelected] = useState('Fall');
-
-  const [json, isLoading, error] = useJsonQuery('https://courses.cs.northwestern.edu/394/guides/data/cs-courses.php');
+  const [json, isLoading, error] = useDataQuery('/');
 
   if (error) return <h1>Error loading user data: {`${error}`}</h1>;
   if (isLoading) return <h1>Loading user data...</h1>;
