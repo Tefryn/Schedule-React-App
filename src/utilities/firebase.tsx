@@ -3,14 +3,13 @@ import { initializeApp } from 'firebase/app';
 import { getDatabase, onValue, push, ref, update } from 'firebase/database';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBds0TWPgOJXYOWxgUqVmc9gNEz6zDpnMA",
-  authDomain: "class-scheduling-app-8e2d2.firebaseapp.com",
-  databaseURL: "https://class-scheduling-app-8e2d2-default-rtdb.firebaseio.com",
-  projectId: "class-scheduling-app-8e2d2",
-  storageBucket: "class-scheduling-app-8e2d2.firebasestorage.app",
-  messagingSenderId: "12015731254",
-  appId: "1:12015731254:web:76184db942bfe8f9354e97",
-  measurementId: "G-GS4J3CVJ6H"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  databaseURL: import.meta.env.VITE_FIREBASE_DB_URL,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
 const firebase = initializeApp(firebaseConfig);
