@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, onValue, push, ref, update } from 'firebase/database';
+import { flushSync } from 'react-dom';
+import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut, type NextOrObserver, type User} from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -13,6 +15,7 @@ const firebaseConfig = {
 };
 
 const firebase = initializeApp(firebaseConfig);
+const auth = getAuth(firebase);
 const database = getDatabase(firebase);
 
 export const useDataQuery = (path: string): [unknown, boolean, Error | undefined] => {
@@ -44,7 +47,7 @@ const timestampMessage = (message: string) => (
 // store a value under a path
 export const useDataUpdate = (path: string): [(value:object) => void, string | undefined, Error | undefined] => {
   const [message, setMessage] = useState("");
-  const [error, setError] = useState(Error);
+  const [error, setError] = useState<Error>();
   const updateData = useCallback((value: object) => {
     update(ref(database, path), value)
     .then(() => { 
@@ -62,7 +65,7 @@ export const useDataUpdate = (path: string): [(value:object) => void, string | u
 // add a value under a Firebase-generated key
 export const useDataPush = (path: string): [(value:object) => void, string | undefined, Error | undefined] => {
   const [message, setMessage] = useState("");
-  const [error, setError] = useState(Error);
+  const [error, setError] = useState<Error>();
   const pushData = useCallback((value: object) => {
     push(ref(database, path), value)
     .then(() => { 
@@ -75,4 +78,37 @@ export const useDataPush = (path: string): [(value:object) => void, string | und
   }, [path]);
 
   return [pushData, message, error];
+};
+
+export const signInWithGoogle = () => {
+  signInWithPopup(auth, new GoogleAuthProvider());
+};
+
+const firebaseSignOut = () => signOut(auth);
+
+export { firebaseSignOut as signOut };
+
+export interface AuthState {
+  user: User | null,
+  isAuthenticated: boolean,
+  isInitialLoading: boolean
+}
+
+export const addAuthStateListener = (fn: NextOrObserver) => (
+  onAuthStateChanged(auth, fn)
+);
+
+export const useAuthState = (): AuthState => {
+  const [user, setUser] = useState(auth.currentUser)
+  const [isInitialLoading, setIsInitialLoading] = useState(true)
+  const isAuthenticated = !!user;
+
+  useEffect(() => addAuthStateListener((user: User | null) => {
+      flushSync(() => {
+        setUser(user);
+        setIsInitialLoading(false);
+      })
+    }), [])
+
+  return {user, isAuthenticated, isInitialLoading };
 };

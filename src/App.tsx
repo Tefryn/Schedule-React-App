@@ -1,9 +1,9 @@
-import Banner from './components/Banner';
+import { Banner } from './components/Banner';
 import { useState } from 'react';
 import { useDataQuery } from './utilities/firebase.tsx';
 import TermSelector from './components/TermSelector.tsx';
 import CourseSelector from './components/CourseSelector.tsx';
-import {ScheduleContextProvider} from './state/ScheduleContextProvider.tsx';
+import { ScheduleContextProvider } from './state/ScheduleContextProvider.tsx';
 import CoursePlanCard from './components/ScheduleCard.tsx';
 
 

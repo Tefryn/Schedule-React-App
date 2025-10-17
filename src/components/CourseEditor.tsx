@@ -1,10 +1,12 @@
 import { useForm, type SubmitHandler, type SubmitErrorHandler } from 'react-hook-form';
+import { useEffect } from "react";
 import { useNavigate } from '@tanstack/react-router';
 import { Button } from './Button.tsx';
 import { type Course } from '../types/Course.tsx'
 import { zodResolver } from '@hookform/resolvers/zod';
 import FormField from './FormField.tsx';
 import {courseSchema} from "../types/Course.tsx"
+import { useDataUpdate } from '../utilities/firebase.tsx';
 
 type CourseFormProps = {
   course: {
@@ -22,22 +24,33 @@ const CourseEditor = (({code, term, number, title, meets}: Course) => {
       mode: 'onChange',
       resolver: zodResolver(courseSchema)
     });
+    const [updateData, message, error] = useDataUpdate(`courses/${code}`);
+    const navigate = useNavigate();
 
     const onSubmit: SubmitHandler<Course> = async(data) => {
-      alert(`Submitting ${JSON.stringify(data)}`)
-      // Simulate a 2-second API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      if (title === data.title && meets === data.meets) {
+        navigate({to: "/"});
+        return
+      }
+      updateData({ title: data.title, meets: data.meets})
     };
     const onError: SubmitErrorHandler<Course> = () => {
       alert('Submissions prevented due to form errors')
     };
 
-    const navigate = useNavigate();
+    useEffect(() => {
+      console.log(message, error);
+      if (message) {
+        navigate({to: "/"});
+      }
+      if (error) {
+        alert(`Update failed: ${error.message}`);
+      }
+    }, [message, error, navigate])
+
     return (
         <form onSubmit={handleSubmit(onSubmit, onError)}>
           <input type="number" {...register('code')} className="hidden" />
-            <FormField name="term" label="Term" errors={errors} register={register}/>
-            <FormField name="number" label="Course Number" errors={errors} register={register}/>
             <FormField name="title" label="Title" errors={errors} register={register}/>
             <FormField name="meets" label="Meeting Times" errors={errors} register={register}/>
           <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit" disabled={isSubmitting}>Submit</button>
