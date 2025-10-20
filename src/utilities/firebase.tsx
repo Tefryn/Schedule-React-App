@@ -94,7 +94,7 @@ export interface AuthState {
   isInitialLoading: boolean
 }
 
-export const addAuthStateListener = (fn: NextOrObserver) => (
+export const addAuthStateListener = (fn: NextOrObserver<User>) => (
   onAuthStateChanged(auth, fn)
 );
 

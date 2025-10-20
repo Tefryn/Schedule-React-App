@@ -1,6 +1,6 @@
 import { type Course } from '../types/Course.tsx';
 import { CourseFormButton } from './CourseEditor.tsx';
-import { useAuthState } from '../utilities/firebase';
+import { useProfile } from '../utilities/profile.tsx';
 
 interface CourseProps {
   course: Course;
@@ -10,7 +10,12 @@ interface CourseProps {
 }
 
 const CourseCard = ({course, selected, conflicted, select}: CourseProps) => {
-    const { user } = useAuthState();
+    const [profile, profileLoading, profileError] = useProfile();
+
+    if (profileError) return <h1>Error loading profile: {`${profileError}`}</h1>;
+    if (profileLoading) return <h1>Loading user profile</h1>;
+    if (!profile) return <h1>No profile data</h1>;
+
     return (
         <div className={`flex flex-col p-2 rounded border ${getBorder(selected, conflicted)}`} onClick={() => select(course)}>
             <h3 className="m-0 px-3 text-lg">{course.term} CS {course.number}</h3>
@@ -19,7 +24,7 @@ const CourseCard = ({course, selected, conflicted, select}: CourseProps) => {
                 <hr className="border-t mt-3 mb-1" />
                 <p className="px-3">{course.meets}</p>
                 {
-                    user ? <CourseFormButton course={course}/> : <></>
+                    (profile?.isAdmin) ? <CourseFormButton course={course}/> : <></>
                 }
             </footer>
         </div>
