@@ -17,7 +17,7 @@ const CourseCard = ({course, selected, conflicted, select}: CourseProps) => {
     if (!profile) return <h1>No profile data</h1>;
 
     return (
-        <div className={`flex flex-col p-2 rounded border ${getBorder(selected, conflicted)}`} onClick={() => select(course)}>
+        <div data-cy="course" className={`flex flex-col p-2 rounded border ${getBorder(selected, conflicted)}`} onClick={() => select(course)}>
             <h3 className="m-0 px-3 text-lg">{course.term} CS {course.number}</h3>
             <p className="m-0 px-3">{course.title}</p>
             <footer className="w-full mt-auto">
