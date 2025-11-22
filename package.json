@@ -5,11 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "start": "vite preview",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
+    "cy:open": "cypress open",
     "preview": "vite preview",
     "test": "vitest --ui",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "em:start": "firebase emulators:start --import=./saved-data --export-on-exit",
+    "em:exec": "firebase emulators:exec --import=./saved-data 'npm start'",
+    "em:execui": "firebase emulators:exec --ui --import=./saved-data 'npm start'"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
